@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniela Bontecou — UGC Creator</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -800,83 +801,123 @@
         }
 
         .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 2rem;
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
         }
 
-        .portfolio-item {
+        /* iPhone Mockup Styles */
+        .iphone-mockup {
             position: relative;
-            overflow: hidden;
-            cursor: pointer;
+            width: 280px;
+            height: 580px;
+            background: #1a1a1a;
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow:
+                0 50px 100px -20px rgba(0, 0, 0, 0.25),
+                0 30px 60px -30px rgba(0, 0, 0, 0.3),
+                inset 0 0 0 2px #333;
+            transition: transform 0.4s var(--ease-out-expo);
         }
 
-        .portfolio-item:nth-child(1) { grid-column: span 5; }
-        .portfolio-item:nth-child(2) { grid-column: span 7; }
-        .portfolio-item:nth-child(3) { grid-column: span 4; }
-        .portfolio-item:nth-child(4) { grid-column: span 4; }
-        .portfolio-item:nth-child(5) { grid-column: span 4; }
-        .portfolio-item:nth-child(6) { grid-column: span 6; }
-        .portfolio-item:nth-child(7) { grid-column: span 6; }
+        .iphone-mockup:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
 
-        .portfolio-item-inner {
-            position: relative;
+        .iphone-screen {
             width: 100%;
-            aspect-ratio: 4/5;
+            height: 100%;
+            background: #000;
+            border-radius: 40px;
             overflow: hidden;
+            position: relative;
         }
 
-        .portfolio-item:nth-child(2) .portfolio-item-inner,
-        .portfolio-item:nth-child(6) .portfolio-item-inner,
-        .portfolio-item:nth-child(7) .portfolio-item-inner {
-            aspect-ratio: 16/10;
+        .iphone-notch {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            background: #1a1a1a;
+            border-radius: 20px;
+            z-index: 10;
         }
 
-        .portfolio-image {
+        .iphone-notch::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            background: #0a0a0a;
+            border-radius: 50%;
+        }
+
+        .iphone-video {
             width: 100%;
             height: 100%;
             object-fit: cover;
-            transition: transform 0.8s var(--ease-out-expo);
         }
 
-        .portfolio-item:hover .portfolio-image {
-            transform: scale(1.08);
-        }
-
-        .portfolio-overlay {
-            position: absolute;
-            inset: 0;
-            background: linear-gradient(to top, rgba(42, 42, 42, 0.9) 0%, transparent 60%);
-            opacity: 0;
-            transition: opacity 0.4s var(--ease-out-expo);
+        .iphone-video-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, var(--charcoal) 0%, #1a1a1a 100%);
             display: flex;
+            align-items: center;
+            justify-content: center;
             flex-direction: column;
-            justify-content: flex-end;
-            padding: 2rem;
+            gap: 1rem;
         }
 
-        .portfolio-item:hover .portfolio-overlay {
-            opacity: 1;
+        .iphone-video-placeholder svg {
+            width: 48px;
+            height: 48px;
+            color: var(--terracotta);
+            opacity: 0.6;
         }
 
-        .portfolio-item-brand {
+        .iphone-video-placeholder span {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(250, 247, 242, 0.4);
+        }
+
+        .iphone-label {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .iphone-label-brand {
             font-size: 0.7rem;
             letter-spacing: 0.2em;
             text-transform: uppercase;
-            color: var(--terracotta-light);
-            margin-bottom: 0.5rem;
+            color: var(--terracotta);
+            margin-bottom: 0.3rem;
         }
 
-        .portfolio-item-title {
+        .iphone-label-title {
             font-family: var(--font-display);
-            font-size: 1.5rem;
-            color: var(--cream);
-            margin-bottom: 0.5rem;
+            font-size: 1.2rem;
+            color: var(--charcoal);
         }
 
-        .portfolio-item-type {
-            font-size: 0.85rem;
-            color: rgba(250, 247, 242, 0.6);
+        .iphone-label-views {
+            font-size: 0.8rem;
+            color: var(--charcoal-light);
+            margin-top: 0.3rem;
+        }
+
+        .video-link {
+            text-decoration: none;
+            display: block;
         }
 
         /* Brands Section */
@@ -1225,16 +1266,23 @@
             }
 
             .portfolio-grid {
-                grid-template-columns: 1fr 1fr;
+                gap: 2rem;
             }
 
-            .portfolio-item:nth-child(n) {
-                grid-column: span 1;
+            .iphone-mockup {
+                width: 240px;
+                height: 500px;
+                border-radius: 42px;
+                padding: 10px;
             }
 
-            .portfolio-item:nth-child(2),
-            .portfolio-item:nth-child(6) {
-                grid-column: span 2;
+            .iphone-screen {
+                border-radius: 34px;
+            }
+
+            .iphone-notch {
+                width: 100px;
+                height: 26px;
             }
 
             .contact {
@@ -1338,11 +1386,23 @@
             }
 
             .portfolio-grid {
-                grid-template-columns: 1fr;
+                gap: 2.5rem;
             }
 
-            .portfolio-item:nth-child(n) {
-                grid-column: span 1;
+            .iphone-mockup {
+                width: 200px;
+                height: 420px;
+                border-radius: 36px;
+                padding: 8px;
+            }
+
+            .iphone-screen {
+                border-radius: 30px;
+            }
+
+            .iphone-notch {
+                width: 80px;
+                height: 22px;
             }
 
             .about-stats {
@@ -1478,84 +1538,54 @@
     <section class="portfolio" id="portfolio">
         <div class="portfolio-header reveal">
             <h2 class="portfolio-title">Selected <em>Work</em></h2>
-            <div class="portfolio-filter">
-                <button class="filter-btn active">All</button>
-                <button class="filter-btn">Video</button>
-                <button class="filter-btn">Photo</button>
-            </div>
         </div>
         <div class="portfolio-grid">
-            <div class="portfolio-item reveal">
-                <div class="portfolio-item-inner">
-                    <img src="https://images.unsplash.com/photo-1556228578-0d85b1a4d571?w=600&q=80" alt="Skincare Campaign" class="portfolio-image">
-                    <div class="portfolio-overlay">
-                        <span class="portfolio-item-brand">Glow Skincare</span>
-                        <h3 class="portfolio-item-title">Morning Routine</h3>
-                        <span class="portfolio-item-type">Video Content</span>
+            <a href="https://www.tiktok.com/@daniela.hormones/video/7546274111136288013?lang=en" target="_blank" class="reveal video-link">
+                <div class="iphone-mockup">
+                    <div class="iphone-screen">
+                        <div class="iphone-notch"></div>
+                        <video class="iphone-video" autoplay muted loop playsinline>
+                            <source src="video1.mp4" type="video/mp4">
+                        </video>
                     </div>
                 </div>
-            </div>
-            <div class="portfolio-item reveal">
-                <div class="portfolio-item-inner">
-                    <img src="https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&q=80" alt="Product Photography" class="portfolio-image">
-                    <div class="portfolio-overlay">
-                        <span class="portfolio-item-brand">Minimal Watch Co</span>
-                        <h3 class="portfolio-item-title">Product Launch</h3>
-                        <span class="portfolio-item-type">Photography</span>
+                <div class="iphone-label">
+                    <div class="iphone-label-brand">Musa</div>
+                    <div class="iphone-label-title">UGC Content</div>
+                    <div class="iphone-label-views">201.5K views</div>
+                </div>
+            </a>
+            <a href="https://www.tiktok.com/@danybontecou/video/7525916772730490119?lang=en" target="_blank" class="reveal video-link">
+                <div class="iphone-mockup">
+                    <div class="iphone-screen">
+                        <div class="iphone-notch"></div>
+                        <video class="iphone-video" autoplay muted loop playsinline>
+                            <source src="video2.mp4" type="video/mp4">
+                        </video>
                     </div>
                 </div>
-            </div>
-            <div class="portfolio-item reveal">
-                <div class="portfolio-item-inner">
-                    <img src="https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&q=80" alt="Beauty Content" class="portfolio-image">
-                    <div class="portfolio-overlay">
-                        <span class="portfolio-item-brand">Lux Beauty</span>
-                        <h3 class="portfolio-item-title">Get Ready With Me</h3>
-                        <span class="portfolio-item-type">Video Content</span>
+                <div class="iphone-label">
+                    <div class="iphone-label-brand">OXA</div>
+                    <div class="iphone-label-title">Restaurant Review</div>
+                    <div class="iphone-label-views">42.3K views</div>
+                </div>
+            </a>
+            <a href="https://www.tiktok.com/@danybontecou/video/7534038859634527496?lang=en" target="_blank" class="reveal video-link">
+                <div class="iphone-mockup">
+                    <div class="iphone-screen">
+                        <div class="iphone-notch"></div>
+                        <video class="iphone-video" autoplay muted loop playsinline>
+                            <source src="video3.mp4" type="video/mp4">
+                        </video>
                     </div>
                 </div>
-            </div>
-            <div class="portfolio-item reveal">
-                <div class="portfolio-item-inner">
-                    <img src="https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=600&q=80" alt="Tech Review" class="portfolio-image">
-                    <div class="portfolio-overlay">
-                        <span class="portfolio-item-brand">SoundWave</span>
-                        <h3 class="portfolio-item-title">Unboxing & Review</h3>
-                        <span class="portfolio-item-type">Video Content</span>
-                    </div>
+                <div class="iphone-label">
+                    <div class="iphone-label-brand">Lifestyle</div>
+                    <div class="iphone-label-title">Day at East High School</div>
+                    <div class="iphone-label-views">12.3K views</div>
                 </div>
-            </div>
-            <div class="portfolio-item reveal">
-                <div class="portfolio-item-inner">
-                    <img src="https://images.unsplash.com/photo-1544367567-0f2fcb009e0b?w=600&q=80" alt="Wellness Content" class="portfolio-image">
-                    <div class="portfolio-overlay">
-                        <span class="portfolio-item-brand">ZenFlow Yoga</span>
-                        <h3 class="portfolio-item-title">Morning Practice</h3>
-                        <span class="portfolio-item-type">Photography</span>
+            </a>
                     </div>
-                </div>
-            </div>
-            <div class="portfolio-item reveal">
-                <div class="portfolio-item-inner">
-                    <img src="https://images.unsplash.com/photo-1560343090-f0409e92791a?w=800&q=80" alt="Fashion Content" class="portfolio-image">
-                    <div class="portfolio-overlay">
-                        <span class="portfolio-item-brand">Aura Fashion</span>
-                        <h3 class="portfolio-item-title">Seasonal Lookbook</h3>
-                        <span class="portfolio-item-type">Video + Photo</span>
-                    </div>
-                </div>
-            </div>
-            <div class="portfolio-item reveal">
-                <div class="portfolio-item-inner">
-                    <img src="https://images.unsplash.com/photo-1556740738-b6a63e27c4df?w=800&q=80" alt="Food Content" class="portfolio-image">
-                    <div class="portfolio-overlay">
-                        <span class="portfolio-item-brand">Brew & Co</span>
-                        <h3 class="portfolio-item-title">Coffee Ritual</h3>
-                        <span class="portfolio-item-type">Photography</span>
-                    </div>
-                </div>
-            </div>
-        </div>
     </section>
 
     <section class="brands">
@@ -1575,37 +1605,37 @@
             <h2 class="contact-title">Let's create something <em>beautiful</em> together</h2>
             <p class="contact-text">Ready to elevate your brand with authentic content? I'd love to hear about your project and how we can collaborate.</p>
             <div class="contact-info">
-                <a href="mailto:hello@daniela.com" class="contact-link">
+                <a href="mailto:danielagzba@gmail.com" class="contact-link">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
                     </svg>
-                    hello@daniela.com
+                    danielagzba@gmail.com
                 </a>
                 <a href="#" class="contact-link">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
                         <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
                     </svg>
-                    Los Angeles, CA
+                    Rincón, Puerto Rico
                 </a>
             </div>
         </div>
-        <form class="contact-form reveal">
+        <form class="contact-form reveal" action="https://formspree.io/danielagzba@gmail.com" method="POST">
             <div class="form-group">
                 <label class="form-label">Your Name</label>
-                <input type="text" class="form-input" placeholder="Enter your name" required>
+                <input type="text" name="name" class="form-input" placeholder="Enter your name" required>
             </div>
             <div class="form-group">
                 <label class="form-label">Email Address</label>
-                <input type="email" class="form-input" placeholder="Enter your email" required>
+                <input type="email" name="email" class="form-input" placeholder="Enter your email" required>
             </div>
             <div class="form-group">
                 <label class="form-label">Brand / Company</label>
-                <input type="text" class="form-input" placeholder="Your brand name">
+                <input type="text" name="company" class="form-input" placeholder="Your brand name">
             </div>
             <div class="form-group">
                 <label class="form-label">Project Details</label>
-                <textarea class="form-textarea" placeholder="Tell me about your project..."></textarea>
+                <textarea class="form-textarea" name="message" placeholder="Tell me about your project..."></textarea>
             </div>
             <button type="submit" class="form-submit">Send Message</button>
         </form>
@@ -1614,22 +1644,17 @@
     <footer>
         <div class="footer-logo">Daniela Bontecou</div>
         <div class="footer-social">
-            <a href="#" aria-label="Instagram">
+            <a href="https://www.instagram.com/danielagzba" target="_blank" aria-label="Instagram">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
                 </svg>
             </a>
-            <a href="#" aria-label="TikTok">
+            <a href="https://www.tiktok.com/@danybontecou?lang=en" target="_blank" aria-label="TikTok">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
                 </svg>
             </a>
-            <a href="#" aria-label="YouTube">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
-                    <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                </svg>
-            </a>
-        </div>
+                    </div>
         <p class="footer-copy">© 2025 Daniela Bontecou. All rights reserved.</p>
     </footer>
 
@@ -1705,14 +1730,7 @@
             });
         });
 
-        // Form submission
-        const form = document.querySelector('.contact-form');
-        form.addEventListener('submit', (e) => {
-            e.preventDefault();
-            alert('Thank you for your message! I\'ll get back to you soon.');
-            form.reset();
-        });
-
+        
         // Parallax effect on editorial frame
         const editorialFrame = document.querySelector('.editorial-frame');
         const editorialAccent = document.querySelector('.editorial-accent');

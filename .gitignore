@@ -1,0 +1,5 @@
+# Video files - host these separately
+*.mp4
+*.MP4
+*.mov
+*.MOV

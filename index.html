@@ -3,363 +3,1790 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Daniela - UGC Creator Portfolio</title>
-    <link rel="stylesheet" href="styles.css">
+    <title>Daniela Bontecou — UGC Creator</title>
+    <link rel="icon" type="image/png" href="favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FAF7F2;
+            --cream-dark: #F0EBE3;
+            --terracotta: #C4654A;
+            --terracotta-light: #D4826A;
+            --charcoal: #2A2A2A;
+            --charcoal-light: #4A4A4A;
+            --sage: #8B9A7D;
+            --gold: #C9A962;
+
+            --font-display: 'Cormorant Garamond', Georgia, serif;
+            --font-body: 'Outfit', -apple-system, sans-serif;
+
+            --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+            --ease-out-back: cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: var(--cream);
+            color: var(--charcoal);
+            overflow-x: hidden;
+            font-weight: 300;
+            line-height: 1.6;
+        }
+
+        /* Grain Overlay */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.03;
+            pointer-events: none;
+            z-index: 9999;
+        }
+
+        /* Custom Cursor */
+        .cursor {
+            width: 20px;
+            height: 20px;
+            border: 1.5px solid var(--terracotta);
+            border-radius: 50%;
+            position: fixed;
+            pointer-events: none;
+            z-index: 10000;
+            transition: transform 0.15s var(--ease-out-expo), opacity 0.15s;
+            transform: translate(-50%, -50%);
+        }
+
+        .cursor.hover {
+            transform: translate(-50%, -50%) scale(2);
+            background: rgba(196, 101, 74, 0.1);
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 1.5rem 3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            background: var(--cream);
+            border-bottom: 1px solid var(--cream-dark);
+        }
+
+        .logo {
+            font-family: var(--font-display);
+            font-size: 1.4rem;
+            font-weight: 400;
+            color: var(--charcoal);
+            letter-spacing: 0.02em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 0.85rem;
+            color: var(--charcoal);
+            text-decoration: none;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 400;
+            position: relative;
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 1px;
+            background: var(--terracotta);
+            transition: width 0.3s var(--ease-out-expo);
+        }
+
+        .nav-links a:hover::after {
+            width: 100%;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero-label {
+            font-size: 0.85rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--terracotta);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease-out-expo) 0.2s forwards;
+        }
+
+        .hero-title {
+            font-family: var(--font-display);
+            font-size: clamp(4rem, 9vw, 8.5rem);
+            font-weight: 400;
+            line-height: 0.95;
+            margin-bottom: 2rem;
+            letter-spacing: -0.02em;
+        }
+
+        .hero-title span {
+            display: block;
+            opacity: 0;
+            animation: fadeUp 1s var(--ease-out-expo) forwards;
+        }
+
+        .hero-title span:nth-child(1) { animation-delay: 0.3s; }
+        .hero-title span:nth-child(2) {
+            animation-delay: 0.4s;
+            font-style: italic;
+            color: var(--terracotta);
+        }
+
+        .hero-subtitle {
+            font-size: 1.2rem;
+            color: var(--charcoal-light);
+            max-width: 480px;
+            margin-bottom: 2.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease-out-expo) 0.6s forwards;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2rem;
+            background: var(--charcoal);
+            color: var(--cream);
+            text-decoration: none;
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            font-weight: 400;
+            transition: all 0.4s var(--ease-out-expo);
+            opacity: 0;
+            animation: fadeUp 0.8s var(--ease-out-expo) 0.7s forwards;
+            width: fit-content;
+        }
+
+        .hero-cta:hover {
+            background: var(--terracotta);
+            transform: translateX(8px);
+        }
+
+        .hero-cta svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s var(--ease-out-expo);
+        }
+
+        .hero-cta:hover svg {
+            transform: translateX(4px);
+        }
+
+        .hero-visual {
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4rem;
+        }
+
+        /* Editorial Image Composition */
+        .editorial-frame {
+            position: relative;
+            width: 480px;
+            height: 580px;
+            opacity: 0;
+            animation: editorialReveal 1.4s var(--ease-out-expo) 0.3s forwards;
+        }
+
+        @keyframes editorialReveal {
+            from {
+                opacity: 0;
+                transform: translateY(40px) rotate(-2deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotate(0deg);
+            }
+        }
+
+        /* Main image container with soft organic shape */
+        .editorial-main {
+            position: absolute;
+            top: 40px;
+            left: 40px;
+            width: 360px;
+            height: 480px;
+            overflow: hidden;
+            background: linear-gradient(145deg, var(--cream-dark) 0%, #E8E3DA 100%);
+            border-radius: 40px 120px 40px 120px / 60px 100px 60px 100px;
+            box-shadow:
+                0 30px 60px -20px rgba(42, 42, 42, 0.35),
+                0 0 0 1px rgba(196, 101, 74, 0.08),
+                inset 0 0 60px rgba(196, 101, 74, 0.03);
+            transition: transform 0.6s var(--ease-out-expo), border-radius 0.6s var(--ease-out-expo);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .editorial-frame:hover .editorial-main {
+            transform: scale(1.02) rotate(0.5deg);
+            border-radius: 60px 100px 60px 100px / 80px 80px 80px 80px;
+        }
+
+        .editorial-main::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(
+                160deg,
+                transparent 50%,
+                rgba(196, 101, 74, 0.05) 80%,
+                rgba(196, 101, 74, 0.1) 100%
+            );
+            z-index: 2;
+            pointer-events: none;
+            border-radius: inherit;
+        }
+
+        .hero-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            object-position: center;
+            transition: transform 0.8s var(--ease-out-expo);
+            filter: contrast(1.02) saturate(1.05);
+        }
+
+        .editorial-frame:hover .hero-image {
+            transform: scale(1.05);
+        }
+
+        /* Floating accent shape - terracotta blob */
+        .editorial-accent {
+            position: absolute;
+            top: -20px;
+            right: 20px;
+            width: 140px;
+            height: 180px;
+            background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-light) 100%);
+            border-radius: 70px 70px 70px 70px / 100px 80px 100px 80px;
+            z-index: -1;
+            opacity: 0;
+            animation: floatIn 1s var(--ease-out-back) 0.6s forwards;
+        }
+
+        @keyframes floatIn {
+            from {
+                opacity: 0;
+                transform: translateY(30px) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .editorial-accent::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            opacity: 0.15;
+            border-radius: inherit;
+        }
+
+        /* Floating decorative ring */
+        .editorial-ring {
+            position: absolute;
+            bottom: 60px;
+            left: -30px;
+            width: 100px;
+            height: 100px;
+            border: 2px solid var(--charcoal);
+            border-radius: 50%;
+            opacity: 0;
+            animation: ringFloat 1.2s var(--ease-out-expo) 0.8s forwards;
+        }
+
+        @keyframes ringFloat {
+            from {
+                opacity: 0;
+                transform: scale(0.5) rotate(-30deg);
+            }
+            to {
+                opacity: 0.3;
+                transform: scale(1) rotate(0deg);
+            }
+        }
+
+        .editorial-ring::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 8px;
+            height: 8px;
+            background: var(--terracotta);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        /* Scattered dots */
+        .editorial-dots {
+            position: absolute;
+            top: 100px;
+            right: -10px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            opacity: 0;
+            animation: dotsReveal 0.8s var(--ease-out-expo) 1s forwards;
+        }
+
+        @keyframes dotsReveal {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .editorial-dots span {
+            width: 6px;
+            height: 6px;
+            background: var(--charcoal);
+            border-radius: 50%;
+            opacity: 0.4;
+        }
+
+        .editorial-dots span:nth-child(2) {
+            width: 10px;
+            height: 10px;
+            background: var(--terracotta);
+            opacity: 0.8;
+        }
+
+        .editorial-dots span:nth-child(4) {
+            width: 4px;
+            height: 4px;
+        }
+
+        /* Elegant line accent */
+        .editorial-line {
+            position: absolute;
+            bottom: 20px;
+            right: 60px;
+            width: 120px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--charcoal), transparent);
+            opacity: 0;
+            animation: lineReveal 1s var(--ease-out-expo) 1.1s forwards;
+        }
+
+        @keyframes lineReveal {
+            from {
+                opacity: 0;
+                width: 0;
+            }
+            to {
+                opacity: 0.3;
+                width: 120px;
+            }
+        }
+
+        .editorial-line::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: -3px;
+            width: 7px;
+            height: 7px;
+            background: var(--gold);
+            border-radius: 50%;
+        }
+
+        /* Small label badge */
+        .editorial-badge {
+            position: absolute;
+            bottom: 100px;
+            right: 0;
+            background: var(--charcoal);
+            color: var(--cream);
+            padding: 0.6rem 1.2rem;
+            font-size: 0.65rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            font-weight: 500;
+            opacity: 0;
+            animation: badgeSlide 0.8s var(--ease-out-expo) 1.2s forwards;
+            transform-origin: right center;
+        }
+
+        @keyframes badgeSlide {
+            from {
+                opacity: 0;
+                transform: translateX(20px) scaleX(0.5);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0) scaleX(1);
+            }
+        }
+
+        .editorial-badge::before {
+            content: '';
+            position: absolute;
+            left: -8px;
+            top: 50%;
+            transform: translateY(-50%);
+            border: 4px solid transparent;
+            border-right-color: var(--charcoal);
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 3rem;
+            left: 6rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--charcoal-light);
+            opacity: 0;
+            animation: fadeIn 0.6s var(--ease-out-expo) 1.2s forwards;
+        }
+
+        .scroll-line {
+            width: 60px;
+            height: 1px;
+            background: var(--charcoal-light);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .scroll-line::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--terracotta);
+            animation: scrollPulse 2s ease-in-out infinite;
+        }
+
+        /* About Section */
+        .about {
+            padding: 10rem 6rem;
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 6rem;
+            align-items: center;
+            position: relative;
+        }
+
+        .about::before {
+            content: 'ABOUT';
+            position: absolute;
+            top: 8rem;
+            right: 6rem;
+            font-family: var(--font-display);
+            font-size: 8rem;
+            font-weight: 400;
+            color: var(--cream-dark);
+            letter-spacing: 0.1em;
+            z-index: 0;
+        }
+
+        .about-visual {
+            position: relative;
+            z-index: 1;
+        }
+
+        .about-image-container {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 3/4;
+            overflow: hidden;
+        }
+
+        .about-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: sepia(10%) contrast(1.02);
+        }
+
+        .about-accent {
+            position: absolute;
+            top: -2rem;
+            right: -2rem;
+            width: 200px;
+            height: 200px;
+            background: linear-gradient(135deg, var(--terracotta) 0%, var(--terracotta-light) 100%);
+            z-index: -1;
+        }
+
+        .about-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--terracotta);
+            margin-bottom: 1.5rem;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .section-label::before {
+            content: '';
+            width: 40px;
+            height: 1px;
+            background: var(--terracotta);
+        }
+
+        .about-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+        }
+
+        .about-title em {
+            font-style: italic;
+            color: var(--terracotta);
+        }
+
+        .about-text {
+            font-size: 1.05rem;
+            color: var(--charcoal-light);
+            margin-bottom: 1.5rem;
+            max-width: 500px;
+        }
+
+        .about-stats {
+            display: flex;
+            gap: 3rem;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--cream-dark);
+        }
+
+        .stat {
+            text-align: left;
+        }
+
+        .stat-number {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            font-weight: 400;
+            color: var(--charcoal);
+            line-height: 1;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--charcoal-light);
+            margin-top: 0.5rem;
+        }
+
+        /* Services Section */
+        .services {
+            padding: 8rem 6rem;
+            background: var(--charcoal);
+            color: var(--cream);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .services::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 50%;
+            width: 1px;
+            height: 100%;
+            background: linear-gradient(to bottom, transparent, rgba(250, 247, 242, 0.1), transparent);
+        }
+
+        .services-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .services-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        .services-subtitle {
+            font-size: 1rem;
+            color: rgba(250, 247, 242, 0.6);
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+        }
+
+        .service-card {
+            padding: 3rem 2rem;
+            border: 1px solid rgba(250, 247, 242, 0.1);
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, var(--terracotta) 0%, transparent 100%);
+            opacity: 0;
+            transition: opacity 0.4s var(--ease-out-expo);
+        }
+
+        .service-card:hover::before {
+            opacity: 0.1;
+        }
+
+        .service-card:hover {
+            border-color: var(--terracotta);
+            transform: translateY(-8px);
+        }
+
+        .service-number {
+            font-family: var(--font-display);
+            font-size: 3rem;
+            color: var(--terracotta);
+            margin-bottom: 1.5rem;
+            position: relative;
+        }
+
+        .service-name {
+            font-family: var(--font-display);
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            position: relative;
+        }
+
+        .service-desc {
+            font-size: 0.9rem;
+            color: rgba(250, 247, 242, 0.6);
+            line-height: 1.7;
+            position: relative;
+        }
+
+        /* Portfolio Section */
+        .portfolio {
+            padding: 10rem 6rem;
+            position: relative;
+        }
+
+        .portfolio-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: end;
+            margin-bottom: 4rem;
+        }
+
+        .portfolio-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 5vw, 4rem);
+            font-weight: 400;
+        }
+
+        .portfolio-title em {
+            font-style: italic;
+            color: var(--terracotta);
+        }
+
+        .portfolio-filter {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .filter-btn {
+            background: none;
+            border: none;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: var(--charcoal-light);
+            cursor: pointer;
+            transition: color 0.3s;
+            position: relative;
+        }
+
+        .filter-btn.active,
+        .filter-btn:hover {
+            color: var(--terracotta);
+        }
+
+        .filter-btn.active::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 100%;
+            height: 1px;
+            background: var(--terracotta);
+        }
+
+        .portfolio-grid {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            flex-wrap: wrap;
+        }
+
+        /* iPhone Mockup Styles */
+        .iphone-mockup {
+            position: relative;
+            width: 280px;
+            height: 580px;
+            background: #1a1a1a;
+            border-radius: 50px;
+            padding: 12px;
+            box-shadow:
+                0 50px 100px -20px rgba(0, 0, 0, 0.25),
+                0 30px 60px -30px rgba(0, 0, 0, 0.3),
+                inset 0 0 0 2px #333;
+            transition: transform 0.4s var(--ease-out-expo);
+        }
+
+        .iphone-mockup:hover {
+            transform: translateY(-10px) scale(1.02);
+        }
+
+        .iphone-screen {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            border-radius: 40px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .iphone-notch {
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 30px;
+            background: #1a1a1a;
+            border-radius: 20px;
+            z-index: 10;
+        }
+
+        .iphone-notch::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 20px;
+            transform: translateY(-50%);
+            width: 10px;
+            height: 10px;
+            background: #0a0a0a;
+            border-radius: 50%;
+        }
+
+        .iphone-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .iphone-video-placeholder {
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(145deg, var(--charcoal) 0%, #1a1a1a 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .iphone-video-placeholder svg {
+            width: 48px;
+            height: 48px;
+            color: var(--terracotta);
+            opacity: 0.6;
+        }
+
+        .iphone-video-placeholder span {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(250, 247, 242, 0.4);
+        }
+
+        .iphone-label {
+            text-align: center;
+            margin-top: 1.5rem;
+        }
+
+        .iphone-label-brand {
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--terracotta);
+            margin-bottom: 0.3rem;
+        }
+
+        .iphone-label-title {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: var(--charcoal);
+        }
+
+        .iphone-label-views {
+            font-size: 0.8rem;
+            color: var(--charcoal-light);
+            margin-top: 0.3rem;
+        }
+
+        .video-link {
+            text-decoration: none;
+            display: block;
+        }
+
+        /* Brands Section */
+        .brands {
+            padding: 6rem;
+            background: var(--cream-dark);
+            text-align: center;
+        }
+
+        .brands-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            color: var(--charcoal-light);
+            margin-bottom: 3rem;
+        }
+
+        .brands-logos {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 5rem;
+            flex-wrap: wrap;
+            opacity: 0.5;
+        }
+
+        .brand-logo {
+            font-family: var(--font-display);
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--charcoal);
+            letter-spacing: 0.05em;
+            transition: opacity 0.3s;
+        }
+
+        .brand-logo:hover {
+            opacity: 0.7;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 10rem 6rem;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            position: relative;
+        }
+
+        .contact::before {
+            content: 'LET\'S';
+            position: absolute;
+            top: 6rem;
+            left: 6rem;
+            font-family: var(--font-display);
+            font-size: 12rem;
+            font-weight: 400;
+            color: var(--cream-dark);
+            letter-spacing: 0.05em;
+            line-height: 0.8;
+            z-index: 0;
+        }
+
+        .contact::after {
+            content: 'WORK';
+            position: absolute;
+            top: 14rem;
+            left: 6rem;
+            font-family: var(--font-display);
+            font-size: 12rem;
+            font-weight: 400;
+            font-style: italic;
+            color: var(--cream-dark);
+            letter-spacing: 0.05em;
+            z-index: 0;
+        }
+
+        .contact-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .contact-title {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 4vw, 3.5rem);
+            font-weight: 400;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+        }
+
+        .contact-title em {
+            font-style: italic;
+            color: var(--terracotta);
+        }
+
+        .contact-text {
+            font-size: 1.05rem;
+            color: var(--charcoal-light);
+            margin-bottom: 3rem;
+            max-width: 450px;
+        }
+
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            text-decoration: none;
+            color: var(--charcoal);
+            font-size: 1.1rem;
+            transition: color 0.3s;
+        }
+
+        .contact-link:hover {
+            color: var(--terracotta);
+        }
+
+        .contact-link svg {
+            width: 20px;
+            height: 20px;
+            color: var(--terracotta);
+        }
+
+        .contact-form {
+            position: relative;
+            z-index: 1;
+            background: var(--cream);
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(42, 42, 42, 0.08);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--charcoal-light);
+            margin-bottom: 0.75rem;
+        }
+
+        .form-input,
+        .form-textarea {
+            width: 100%;
+            padding: 1rem 0;
+            border: none;
+            border-bottom: 1px solid var(--cream-dark);
+            background: transparent;
+            font-family: var(--font-body);
+            font-size: 1rem;
+            color: var(--charcoal);
+            transition: border-color 0.3s;
+            outline: none;
+        }
+
+        .form-input:focus,
+        .form-textarea:focus {
+            border-color: var(--terracotta);
+        }
+
+        .form-textarea {
+            resize: none;
+            min-height: 120px;
+        }
+
+        .form-submit {
+            width: 100%;
+            padding: 1.25rem 2rem;
+            background: var(--charcoal);
+            color: var(--cream);
+            border: none;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: all 0.4s var(--ease-out-expo);
+        }
+
+        .form-submit:hover {
+            background: var(--terracotta);
+        }
+
+        /* Footer */
+        footer {
+            padding: 3rem 6rem;
+            background: var(--charcoal);
+            color: var(--cream);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            font-weight: 400;
+        }
+
+        .footer-social {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .footer-social a {
+            color: var(--cream);
+            opacity: 0.6;
+            transition: opacity 0.3s;
+        }
+
+        .footer-social a:hover {
+            opacity: 1;
+        }
+
+        .footer-social svg {
+            width: 20px;
+            height: 20px;
+        }
+
+        .footer-copy {
+            font-size: 0.8rem;
+            opacity: 0.4;
+        }
+
+        /* Animations */
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(1.1);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes scrollPulse {
+            0%, 100% { left: -100%; }
+            50% { left: 100%; }
+        }
+
+        /* Scroll Animations */
+        .reveal {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: all 0.8s var(--ease-out-expo);
+        }
+
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .hero {
+                grid-template-columns: 1fr;
+                min-height: auto;
+            }
+
+            .hero-content {
+                padding: 8rem 3rem 4rem;
+            }
+
+            .hero-visual {
+                min-height: 60vh;
+                padding: 3rem 2rem;
+            }
+
+            .editorial-frame {
+                width: 400px;
+                height: 500px;
+            }
+
+            .editorial-main {
+                width: 300px;
+                height: 400px;
+                top: 30px;
+                left: 50px;
+                border-radius: 30px 90px 30px 90px / 50px 80px 50px 80px;
+            }
+
+            .editorial-accent {
+                width: 120px;
+                height: 150px;
+                top: -10px;
+                right: 30px;
+            }
+
+            .editorial-ring {
+                width: 80px;
+                height: 80px;
+                bottom: 40px;
+                left: -10px;
+            }
+
+            .editorial-badge {
+                bottom: 80px;
+            }
+
+            .about {
+                grid-template-columns: 1fr;
+                padding: 6rem 3rem;
+                gap: 4rem;
+            }
+
+            .about::before {
+                font-size: 4rem;
+                top: 4rem;
+                right: 3rem;
+            }
+
+            .services {
+                padding: 6rem 3rem;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .portfolio {
+                padding: 6rem 3rem;
+            }
+
+            .portfolio-grid {
+                gap: 2rem;
+            }
+
+            .iphone-mockup {
+                width: 240px;
+                height: 500px;
+                border-radius: 42px;
+                padding: 10px;
+            }
+
+            .iphone-screen {
+                border-radius: 34px;
+            }
+
+            .iphone-notch {
+                width: 100px;
+                height: 26px;
+            }
+
+            .contact {
+                grid-template-columns: 1fr;
+                padding: 6rem 3rem;
+                gap: 4rem;
+            }
+
+            .contact::before,
+            .contact::after {
+                font-size: 6rem;
+            }
+
+            nav {
+                padding: 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        @media (max-width: 640px) {
+            .hero-content {
+                padding: 7rem 1.5rem 3rem;
+            }
+
+            .hero-visual {
+                min-height: 50vh;
+                padding: 2rem 1rem;
+            }
+
+            .editorial-frame {
+                width: 340px;
+                height: 460px;
+            }
+
+            .editorial-main {
+                width: 280px;
+                height: 380px;
+                top: 30px;
+                left: 30px;
+                border-radius: 28px 80px 28px 80px / 45px 70px 45px 70px;
+            }
+
+            .editorial-accent {
+                width: 100px;
+                height: 130px;
+                top: -5px;
+                right: 15px;
+            }
+
+            .editorial-ring {
+                width: 70px;
+                height: 70px;
+                bottom: 30px;
+                left: -5px;
+            }
+
+            .editorial-dots {
+                right: -5px;
+                top: 90px;
+                gap: 10px;
+            }
+
+            .editorial-dots span {
+                width: 5px;
+                height: 5px;
+            }
+
+            .editorial-dots span:nth-child(2) {
+                width: 8px;
+                height: 8px;
+            }
+
+            .editorial-line {
+                width: 100px;
+                right: 30px;
+                bottom: 15px;
+            }
+
+            @keyframes lineReveal {
+                to {
+                    opacity: 0.3;
+                    width: 100px;
+                }
+            }
+
+            .editorial-badge {
+                bottom: 70px;
+                padding: 0.5rem 1rem;
+                font-size: 0.6rem;
+            }
+
+            .about,
+            .services,
+            .portfolio,
+            .contact,
+            .brands {
+                padding: 4rem 1.5rem;
+            }
+
+            .portfolio-grid {
+                gap: 2.5rem;
+            }
+
+            .iphone-mockup {
+                width: 200px;
+                height: 420px;
+                border-radius: 36px;
+                padding: 8px;
+            }
+
+            .iphone-screen {
+                border-radius: 30px;
+            }
+
+            .iphone-notch {
+                width: 80px;
+                height: 22px;
+            }
+
+            .about-stats {
+                flex-wrap: wrap;
+                gap: 2rem;
+            }
+
+            .contact::before,
+            .contact::after {
+                font-size: 3.5rem;
+            }
+
+            footer {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+                padding: 2rem 1.5rem;
+            }
+
+            .scroll-indicator {
+                position: static;
+                margin-top: 2.5rem;
+            }
+        }
+    </style>
 </head>
 <body>
-    <!-- Hero Section -->
+    <div class="cursor"></div>
+
+    <nav>
+        <div class="logo">Daniela Bontecou</div>
+        <ul class="nav-links">
+            <li><a href="#about">About</a></li>
+            <li><a href="#services">Services</a></li>
+            <li><a href="#portfolio">Work</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+    </nav>
+
     <section class="hero">
-        <nav class="navbar">
-            <div class="nav-container">
-                <div class="logo">Daniela</div>
-                <ul class="nav-links">
-                    <li><a href="#portfolio">Portfolio</a></li>
-                    <li><a href="#brands">Brands</a></li>
-                    <li><a href="#platforms">Platforms</a></li>
-                    <li><a href="#contact">Contact</a></li>
-                </ul>
-                <div class="mobile-menu-toggle">
-                    <span></span>
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-        </nav>
-
         <div class="hero-content">
-            <h1 class="hero-title">Hi, I'm Daniela</h1>
-            <p class="hero-subtitle">UGC Creator & Content Strategist</p>
-            <p class="hero-description">Creating authentic, engaging content that converts</p>
-            <div class="hero-stats">
-                <div class="stat">
-                    <span class="stat-number">10M+</span>
-                    <span class="stat-label">Total Views</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">50+</span>
-                    <span class="stat-label">Brand Partners</span>
-                </div>
-                <div class="stat">
-                    <span class="stat-number">95%</span>
-                    <span class="stat-label">Engagement Rate</span>
-                </div>
+            <p class="hero-label">UGC Creator & Content Strategist</p>
+            <h1 class="hero-title">
+                <span>Creating Content</span>
+                <span>That Converts</span>
+            </h1>
+            <p class="hero-subtitle">I partner with brands to create authentic, scroll-stopping content that drives engagement and builds lasting connections with audiences.</p>
+            <a href="#contact" class="hero-cta">
+                Let's Collaborate
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+            </a>
+            <div class="scroll-indicator">
+                <div class="scroll-line"></div>
+                Scroll to explore
             </div>
-            <a href="#portfolio" class="cta-button">View My Work</a>
+        </div>
+        <div class="hero-visual">
+            <div class="editorial-frame">
+                <div class="editorial-accent"></div>
+                <div class="editorial-main">
+                    <img src="hero.png" alt="Daniela - UGC Creator" class="hero-image">
+                </div>
+                <div class="editorial-ring"></div>
+                <div class="editorial-dots">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+                <div class="editorial-line"></div>
+                <div class="editorial-badge">Creator</div>
+            </div>
         </div>
     </section>
 
-    <!-- Portfolio Section with iPhone Mockups -->
-    <section id="portfolio" class="portfolio">
-        <div class="container">
-            <h2 class="section-title">Featured Content</h2>
-            <p class="section-subtitle">My most viral and engaging videos</p>
-
-            <div class="videos-grid">
-                <!-- Video 1 -->
-                <div class="video-item">
-                    <div class="iphone-mockup">
-                        <div class="iphone-frame">
-                            <div class="iphone-screen">
-                                <div class="video-placeholder" data-video-id="1">
-                                    <iframe src="https://www.tiktok.com/embed/v2/video1" frameborder="0" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="video-info">
-                            <h3>Product Review</h3>
-                            <div class="view-count">
-                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                </svg>
-                                2.5M views
-                            </div>
-                        </div>
-                    </div>
+    <section class="about" id="about">
+        <div class="about-visual reveal">
+            <div class="about-image-container">
+                <img src="about-photo.jpeg" alt="About Daniela" class="about-image">
+            </div>
+            <div class="about-accent"></div>
+        </div>
+        <div class="about-content reveal">
+            <p class="section-label">About Me</p>
+            <h2 class="about-title">Turning everyday moments into <em>brand stories</em></h2>
+            <p class="about-text">Hey, I'm Daniela! I'm a UGC creator passionate about crafting authentic content that resonates. I specialize in lifestyle, beauty, and wellness content that feels genuine—not salesy.</p>
+            <p class="about-text">With a background in visual storytelling and a keen eye for aesthetics, I help brands connect with their audience through relatable, high-converting content.</p>
+            <div class="about-stats">
+                <div class="stat">
+                    <div class="stat-number">10+</div>
+                    <div class="stat-label">Brand Collaborations</div>
                 </div>
-
-                <!-- Video 2 -->
-                <div class="video-item">
-                    <div class="iphone-mockup">
-                        <div class="iphone-frame">
-                            <div class="iphone-screen">
-                                <div class="video-placeholder" data-video-id="2">
-                                    <iframe src="https://www.tiktok.com/embed/v2/video2" frameborder="0" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="video-info">
-                            <h3>Lifestyle Vlog</h3>
-                            <div class="view-count">
-                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                </svg>
-                                1.8M views
-                            </div>
-                        </div>
-                    </div>
+                <div class="stat">
+                    <div class="stat-number">2.2M</div>
+                    <div class="stat-label">Content Views</div>
                 </div>
-
-                <!-- Video 3 -->
-                <div class="video-item">
-                    <div class="iphone-mockup">
-                        <div class="iphone-frame">
-                            <div class="iphone-screen">
-                                <div class="video-placeholder" data-video-id="3">
-                                    <iframe src="https://www.tiktok.com/embed/v2/video3" frameborder="0" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="video-info">
-                            <h3>Fashion Haul</h3>
-                            <div class="view-count">
-                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                </svg>
-                                3.2M views
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Video 4 -->
-                <div class="video-item">
-                    <div class="iphone-mockup">
-                        <div class="iphone-frame">
-                            <div class="iphone-screen">
-                                <div class="video-placeholder" data-video-id="4">
-                                    <iframe src="https://www.tiktok.com/embed/v2/video4" frameborder="0" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="video-info">
-                            <h3>Beauty Tutorial</h3>
-                            <div class="view-count">
-                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                </svg>
-                                1.5M views
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Video 5 -->
-                <div class="video-item">
-                    <div class="iphone-mockup">
-                        <div class="iphone-frame">
-                            <div class="iphone-screen">
-                                <div class="video-placeholder" data-video-id="5">
-                                    <iframe src="https://www.tiktok.com/embed/v2/video5" frameborder="0" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="video-info">
-                            <h3>Fitness Challenge</h3>
-                            <div class="view-count">
-                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                </svg>
-                                2.1M views
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Video 6 -->
-                <div class="video-item">
-                    <div class="iphone-mockup">
-                        <div class="iphone-frame">
-                            <div class="iphone-screen">
-                                <div class="video-placeholder" data-video-id="6">
-                                    <iframe src="https://www.tiktok.com/embed/v2/video6" frameborder="0" allowfullscreen></iframe>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="video-info">
-                            <h3>Recipe Tutorial</h3>
-                            <div class="view-count">
-                                <svg width="16" height="16" fill="currentColor" viewBox="0 0 16 16">
-                                    <path d="M16 8s-3-5.5-8-5.5S0 8 0 8s3 5.5 8 5.5S16 8 16 8zM1.173 8a13.133 13.133 0 0 1 1.66-2.043C4.12 4.668 5.88 3.5 8 3.5c2.12 0 3.879 1.168 5.168 2.457A13.133 13.133 0 0 1 14.828 8c-.058.087-.122.183-.195.288-.335.48-.83 1.12-1.465 1.755C11.879 11.332 10.119 12.5 8 12.5c-2.12 0-3.879-1.168-5.168-2.457A13.134 13.134 0 0 1 1.172 8z"/>
-                                    <path d="M8 5.5a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zM4.5 8a3.5 3.5 0 1 1 7 0 3.5 3.5 0 0 1-7 0z"/>
-                                </svg>
-                                1.7M views
-                            </div>
-                        </div>
-                    </div>
+                <div class="stat">
+                    <div class="stat-number">100%</div>
+                    <div class="stat-label">Client Satisfaction</div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Brands Section -->
-    <section id="brands" class="brands">
-        <div class="container">
-            <h2 class="section-title">Brands I've Worked With</h2>
-            <p class="section-subtitle">Trusted by leading brands worldwide</p>
-
-            <div class="brands-grid">
-                <div class="brand-item">
-                    <div class="brand-logo">Brand A</div>
-                </div>
-                <div class="brand-item">
-                    <div class="brand-logo">Brand B</div>
-                </div>
-                <div class="brand-item">
-                    <div class="brand-logo">Brand C</div>
-                </div>
-                <div class="brand-item">
-                    <div class="brand-logo">Brand D</div>
-                </div>
-                <div class="brand-item">
-                    <div class="brand-logo">Brand E</div>
-                </div>
-                <div class="brand-item">
-                    <div class="brand-logo">Brand F</div>
-                </div>
-                <div class="brand-item">
-                    <div class="brand-logo">Brand G</div>
-                </div>
-                <div class="brand-item">
-                    <div class="brand-logo">Brand H</div>
-                </div>
+    <section class="services" id="services">
+        <div class="services-header reveal">
+            <p class="section-label" style="color: var(--terracotta-light); justify-content: center;">What I Offer</p>
+            <h2 class="services-title">Services</h2>
+            <p class="services-subtitle">From concept to creation, I deliver content that tells your brand's story authentically.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card reveal">
+                <div class="service-number">01</div>
+                <h3 class="service-name">UGC Videos</h3>
+                <p class="service-desc">Scroll-stopping short-form videos optimized for TikTok, Reels, and Shorts. Unboxings, tutorials, reviews, and lifestyle content.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-number">02</div>
+                <h3 class="service-name">Product Photography</h3>
+                <p class="service-desc">Aesthetic, on-brand imagery that showcases your products in real-life settings. Perfect for social media and e-commerce.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-number">03</div>
+                <h3 class="service-name">Testimonials & Reviews</h3>
+                <p class="service-desc">Authentic testimonial content that builds trust. Real reactions, genuine enthusiasm, and compelling storytelling.</p>
             </div>
         </div>
     </section>
 
-    <!-- Platforms Section -->
-    <section id="platforms" class="platforms">
-        <div class="container">
-            <h2 class="section-title">Where to Find Me</h2>
-            <p class="section-subtitle">Connect with me on your favorite platforms</p>
-
-            <div class="platforms-grid">
-                <a href="#" class="platform-card">
-                    <div class="platform-icon tiktok">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.34 6.34 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-                        </svg>
+    <section class="portfolio" id="portfolio">
+        <div class="portfolio-header reveal">
+            <h2 class="portfolio-title">Selected <em>Work</em></h2>
+        </div>
+        <div class="portfolio-grid">
+            <a href="https://www.tiktok.com/@daniela.hormones/video/7546274111136288013?lang=en" target="_blank" class="reveal video-link">
+                <div class="iphone-mockup">
+                    <div class="iphone-screen">
+                        <div class="iphone-notch"></div>
+                        <video class="iphone-video" autoplay muted loop playsinline>
+                            <source src="video1.mp4" type="video/mp4">
+                        </video>
                     </div>
-                    <h3>TikTok</h3>
-                    <p>@daniela</p>
-                    <span class="follower-count">250K Followers</span>
+                </div>
+                <div class="iphone-label">
+                    <div class="iphone-label-brand">Musa</div>
+                    <div class="iphone-label-title">UGC Content</div>
+                    <div class="iphone-label-views">201.5K views</div>
+                </div>
+            </a>
+            <a href="https://www.tiktok.com/@danybontecou/video/7525916772730490119?lang=en" target="_blank" class="reveal video-link">
+                <div class="iphone-mockup">
+                    <div class="iphone-screen">
+                        <div class="iphone-notch"></div>
+                        <video class="iphone-video" autoplay muted loop playsinline>
+                            <source src="video2.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="iphone-label">
+                    <div class="iphone-label-brand">OXA</div>
+                    <div class="iphone-label-title">Restaurant Review</div>
+                    <div class="iphone-label-views">42.3K views</div>
+                </div>
+            </a>
+            <a href="https://www.tiktok.com/@danybontecou/video/7534038859634527496?lang=en" target="_blank" class="reveal video-link">
+                <div class="iphone-mockup">
+                    <div class="iphone-screen">
+                        <div class="iphone-notch"></div>
+                        <video class="iphone-video" autoplay muted loop playsinline>
+                            <source src="video3.mp4" type="video/mp4">
+                        </video>
+                    </div>
+                </div>
+                <div class="iphone-label">
+                    <div class="iphone-label-brand">Lifestyle</div>
+                    <div class="iphone-label-title">Day at East High School</div>
+                    <div class="iphone-label-views">12.3K views</div>
+                </div>
+            </a>
+                    </div>
+    </section>
+
+    <section class="brands">
+        <p class="brands-label">Trusted by brands like</p>
+        <div class="brands-logos">
+            <a href="https://www.instagram.com/p/Ctt-BAwxN7w/?hl=en&img_index=3" target="_blank" class="brand-logo">Rhode</a>
+            <a href="https://www.tiktok.com/@daniela.hormones?lang=en" target="_blank" class="brand-logo">Musa</a>
+            <a href="https://www.tiktok.com/@danybontecou/video/7525916772730490119" target="_blank" class="brand-logo">OXA</a>
+            <a href="https://www.instagram.com/p/CU7tfi6Fx8-/?hl=en&img_index=1" target="_blank" class="brand-logo">PaiPai</a>
+            <a href="https://www.instagram.com/p/CWbXZ48jKPH/?hl=en" target="_blank" class="brand-logo">Ojo Sagrado</a>
+        </div>
+    </section>
+
+    <section class="contact" id="contact">
+        <div class="contact-content reveal">
+            <p class="section-label">Get In Touch</p>
+            <h2 class="contact-title">Let's create something <em>beautiful</em> together</h2>
+            <p class="contact-text">Ready to elevate your brand with authentic content? I'd love to hear about your project and how we can collaborate.</p>
+            <div class="contact-info">
+                <a href="mailto:danielagzba@gmail.com" class="contact-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
+                    </svg>
+                    danielagzba@gmail.com
                 </a>
-
-                <a href="#" class="platform-card">
-                    <div class="platform-icon instagram">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.405a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/>
-                        </svg>
-                    </div>
-                    <h3>Instagram</h3>
-                    <p>@daniela</p>
-                    <span class="follower-count">180K Followers</span>
-                </a>
-
-                <a href="#" class="platform-card">
-                    <div class="platform-icon youtube">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                        </svg>
-                    </div>
-                    <h3>YouTube Shorts</h3>
-                    <p>@daniela</p>
-                    <span class="follower-count">95K Subscribers</span>
+                <a href="#" class="contact-link">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1115 0z" />
+                    </svg>
+                    Rincón, Puerto Rico
                 </a>
             </div>
         </div>
+        <form id="contact-form" class="contact-form reveal">
+            <div class="form-group">
+                <label class="form-label">Your Name</label>
+                <input type="text" name="name" class="form-input" placeholder="Enter your name" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Email Address</label>
+                <input type="email" name="email" class="form-input" placeholder="Enter your email" required>
+            </div>
+            <div class="form-group">
+                <label class="form-label">Brand / Company</label>
+                <input type="text" name="company" class="form-input" placeholder="Your brand name">
+            </div>
+            <div class="form-group">
+                <label class="form-label">Project Details</label>
+                <textarea class="form-textarea" name="message" placeholder="Tell me about your project..."></textarea>
+            </div>
+            <button type="submit" class="form-submit">Send Message</button>
+        </form>
     </section>
 
-    <!-- Contact Section -->
-    <section id="contact" class="contact">
-        <div class="container">
-            <h2 class="section-title">Let's Work Together</h2>
-            <p class="section-subtitle">Ready to create amazing content for your brand?</p>
-
-            <form class="contact-form" id="contactForm">
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="name">Name</label>
-                        <input type="text" id="name" name="name" required>
+    <footer>
+        <div class="footer-logo">Daniela Bontecou</div>
+        <div class="footer-social">
+            <a href="https://www.instagram.com/danielagzba" target="_blank" aria-label="Instagram">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/>
+                </svg>
+            </a>
+            <a href="https://www.tiktok.com/@danybontecou?lang=en" target="_blank" aria-label="TikTok">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-5.2 1.74 2.89 2.89 0 012.31-4.64 2.93 2.93 0 01.88.13V9.4a6.84 6.84 0 00-1-.05A6.33 6.33 0 005 20.1a6.34 6.34 0 0010.86-4.43v-7a8.16 8.16 0 004.77 1.52v-3.4a4.85 4.85 0 01-1-.1z"/>
+                </svg>
+            </a>
                     </div>
-                    <div class="form-group">
-                        <label for="email">Email</label>
-                        <input type="email" id="email" name="email" required>
-                    </div>
-                </div>
-
-                <div class="form-row">
-                    <div class="form-group">
-                        <label for="brand">Brand/Company</label>
-                        <input type="text" id="brand" name="brand" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="budget">Budget Range</label>
-                        <select id="budget" name="budget">
-                            <option value="">Select budget</option>
-                            <option value="1000-5000">$1,000 - $5,000</option>
-                            <option value="5000-10000">$5,000 - $10,000</option>
-                            <option value="10000-25000">$10,000 - $25,000</option>
-                            <option value="25000+">$25,000+</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="form-group full-width">
-                    <label for="message">Project Details</label>
-                    <textarea id="message" name="message" rows="5" required></textarea>
-                </div>
-
-                <button type="submit" class="submit-button">Send Message</button>
-            </form>
-        </div>
-    </section>
-
-    <!-- Footer -->
-    <footer class="footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-brand">
-                    <h3>Daniela</h3>
-                    <p>UGC Creator & Content Strategist</p>
-                </div>
-                <div class="footer-links">
-                    <a href="#portfolio">Portfolio</a>
-                    <a href="#brands">Brands</a>
-                    <a href="#platforms">Platforms</a>
-                    <a href="#contact">Contact</a>
-                </div>
-                <div class="footer-social">
-                    <a href="#" aria-label="TikTok">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M19.59 6.69a4.83 4.83 0 0 1-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 0 1-5.2 1.74 2.89 2.89 0 0 1 2.31-4.64 2.93 2.93 0 0 1 .88.13V9.4a6.34 6.34 0 0 0-1-.05A6.33 6.33 0 0 0 5 20.1a6.34 6.34 0 0 0 10.86-4.43v-7a8.16 8.16 0 0 0 4.77 1.52v-3.4a4.85 4.85 0 0 1-1-.1z"/>
-                        </svg>
-                    </a>
-                    <a href="#" aria-label="Instagram">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zM5.838 12a6.162 6.162 0 1 1 12.324 0 6.162 6.162 0 0 1-12.324 0zM12 16a4 4 0 1 1 0-8 4 4 0 0 1 0 8zm4.965-10.405a1.44 1.44 0 1 1 2.881.001 1.44 1.44 0 0 1-2.881-.001z"/>
-                        </svg>
-                    </a>
-                    <a href="#" aria-label="YouTube">
-                        <svg viewBox="0 0 24 24" fill="currentColor">
-                            <path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
-                        </svg>
-                    </a>
-                </div>
-            </div>
-            <div class="footer-bottom">
-                <p>&copy; 2024 Daniela. All rights reserved.</p>
-            </div>
-        </div>
+        <p class="footer-copy">© 2025 Daniela Bontecou. All rights reserved.</p>
     </footer>
 
-    <script src="script.js"></script>
+    <script>
+        // Custom Cursor
+        const cursor = document.querySelector('.cursor');
+        let mouseX = 0, mouseY = 0;
+        let cursorX = 0, cursorY = 0;
+
+        document.addEventListener('mousemove', (e) => {
+            mouseX = e.clientX;
+            mouseY = e.clientY;
+        });
+
+        function animateCursor() {
+            cursorX += (mouseX - cursorX) * 0.1;
+            cursorY += (mouseY - cursorY) * 0.1;
+            cursor.style.left = cursorX + 'px';
+            cursor.style.top = cursorY + 'px';
+            requestAnimationFrame(animateCursor);
+        }
+        animateCursor();
+
+        // Cursor hover effect
+        const hoverElements = document.querySelectorAll('a, button, .portfolio-item');
+        hoverElements.forEach(el => {
+            el.addEventListener('mouseenter', () => cursor.classList.add('hover'));
+            el.addEventListener('mouseleave', () => cursor.classList.remove('hover'));
+        });
+
+        // Hide cursor on mobile
+        if ('ontouchstart' in window) {
+            cursor.style.display = 'none';
+        }
+
+        // Scroll Reveal
+        const revealElements = document.querySelectorAll('.reveal');
+
+        const revealOnScroll = () => {
+            revealElements.forEach(el => {
+                const elementTop = el.getBoundingClientRect().top;
+                const windowHeight = window.innerHeight;
+
+                if (elementTop < windowHeight - 100) {
+                    el.classList.add('active');
+                }
+            });
+        };
+
+        window.addEventListener('scroll', revealOnScroll);
+        revealOnScroll();
+
+        // Smooth scroll for nav links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Portfolio filter (visual only for demo)
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', () => {
+                filterBtns.forEach(b => b.classList.remove('active'));
+                btn.classList.add('active');
+            });
+        });
+
+        
+        // Parallax effect on editorial frame
+        const editorialFrame = document.querySelector('.editorial-frame');
+        const editorialAccent = document.querySelector('.editorial-accent');
+        window.addEventListener('scroll', () => {
+            const scrolled = window.pageYOffset;
+            if (editorialFrame && scrolled < window.innerHeight) {
+                editorialFrame.style.transform = `translateY(${scrolled * 0.08}px)`;
+                if (editorialAccent) {
+                    editorialAccent.style.transform = `translateY(${scrolled * -0.05}px) rotate(${scrolled * 0.02}deg)`;
+                }
+            }
+        });
+
+        // Contact form submission
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = contactForm.querySelector('.form-submit');
+        const originalBtnText = submitBtn.textContent;
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            const formData = {
+                name: contactForm.querySelector('[name="name"]').value,
+                email: contactForm.querySelector('[name="email"]').value,
+                company: contactForm.querySelector('[name="company"]').value,
+                message: contactForm.querySelector('[name="message"]').value,
+            };
+
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData),
+                });
+
+                if (response.ok) {
+                    submitBtn.textContent = 'Message Sent!';
+                    contactForm.reset();
+                    setTimeout(() => {
+                        submitBtn.textContent = originalBtnText;
+                        submitBtn.disabled = false;
+                    }, 3000);
+                } else {
+                    throw new Error('Failed to send');
+                }
+            } catch (error) {
+                submitBtn.textContent = 'Error - Try Again';
+                submitBtn.disabled = false;
+                setTimeout(() => {
+                    submitBtn.textContent = originalBtnText;
+                }, 3000);
+            }
+        });
+    </script>
 </body>
 </html>

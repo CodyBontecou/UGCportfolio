@@ -1,0 +1,3 @@
+# Only ignore Vercel config, not videos
+.vercel
+.env*.local

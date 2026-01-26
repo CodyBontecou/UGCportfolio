@@ -1620,7 +1620,7 @@
                 </a>
             </div>
         </div>
-        <form class="contact-form reveal" action="https://formspree.io/danielagzba@gmail.com" method="POST">
+        <form id="contact-form" class="contact-form reveal">
             <div class="form-group">
                 <label class="form-label">Your Name</label>
                 <input type="text" name="name" class="form-input" placeholder="Enter your name" required>
@@ -1741,6 +1741,50 @@
                 if (editorialAccent) {
                     editorialAccent.style.transform = `translateY(${scrolled * -0.05}px) rotate(${scrolled * 0.02}deg)`;
                 }
+            }
+        });
+
+        // Contact form submission
+        const contactForm = document.getElementById('contact-form');
+        const submitBtn = contactForm.querySelector('.form-submit');
+        const originalBtnText = submitBtn.textContent;
+
+        contactForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            submitBtn.textContent = 'Sending...';
+            submitBtn.disabled = true;
+
+            const formData = {
+                name: contactForm.querySelector('[name="name"]').value,
+                email: contactForm.querySelector('[name="email"]').value,
+                company: contactForm.querySelector('[name="company"]').value,
+                message: contactForm.querySelector('[name="message"]').value,
+            };
+
+            try {
+                const response = await fetch('/api/contact', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(formData),
+                });
+
+                if (response.ok) {
+                    submitBtn.textContent = 'Message Sent!';
+                    contactForm.reset();
+                    setTimeout(() => {
+                        submitBtn.textContent = originalBtnText;
+                        submitBtn.disabled = false;
+                    }, 3000);
+                } else {
+                    throw new Error('Failed to send');
+                }
+            } catch (error) {
+                submitBtn.textContent = 'Error - Try Again';
+                submitBtn.disabled = false;
+                setTimeout(() => {
+                    submitBtn.textContent = originalBtnText;
+                }, 3000);
             }
         });
     </script>

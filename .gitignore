@@ -3,3 +3,6 @@
 *.MP4
 *.mov
 *.MOV
+.vercel
+.env*.local
+node_modules

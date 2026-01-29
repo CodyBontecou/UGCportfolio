@@ -1571,11 +1571,11 @@
             </div>
             <div class="form-group">
                 <label class="form-label">Brand / Company</label>
-                <input type="text" name="company" class="form-input" placeholder="Your brand name">
+                <input type="text" name="company" class="form-input" placeholder="Your brand name" required>
             </div>
             <div class="form-group">
                 <label class="form-label">Project Details</label>
-                <textarea class="form-textarea" name="message" placeholder="Tell me about your project..."></textarea>
+                <textarea class="form-textarea" name="message" placeholder="Tell me about your project..." required></textarea>
             </div>
             <button type="submit" class="form-submit">Send Message</button>
         </form>
@@ -1703,10 +1703,13 @@
             };
 
             try {
-                const response = await fetch('/api/contact', {
+                const response = await fetch('https://ugc.community/api/portfolio/contact', {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(formData),
+                    body: JSON.stringify({
+                        ...formData,
+                        creatorSubdomain: 'daniela'
+                    }),
                 });
 
                 if (response.ok) {

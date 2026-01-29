@@ -1598,6 +1598,19 @@
         <p class="footer-copy">© 2026 Daniela Bontecou. All rights reserved.</p>
     </footer>
 
+    <!-- UGC.community Portfolio View Tracking -->
+    <script>
+    (function() {
+      var subdomain = 'daniela';
+      var url = 'https://ugc.community/api/portfolio/track?subdomain=' + subdomain;
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon(url);
+      } else {
+        fetch(url, { method: 'POST', keepalive: true }).catch(function() {});
+      }
+    })();
+    </script>
+
     <script>
         // Custom Cursor
         const cursor = document.querySelector('.cursor');

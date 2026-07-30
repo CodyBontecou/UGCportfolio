@@ -1,0 +1,26 @@
+{
+  "redirects": [
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "daniela.ugc.community"
+        }
+      ],
+      "destination": "https://dany.ugc.community/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/:path*",
+      "has": [
+        {
+          "type": "host",
+          "value": "danielabontecou.ugc.community"
+        }
+      ],
+      "destination": "https://dany.ugc.community/:path*",
+      "permanent": true
+    }
+  ]
+}

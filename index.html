@@ -4,7 +4,45 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Daniela Bontecou — UGC Creator</title>
+    <meta name="description" content="Daniela Bontecou creates lifestyle, beauty, and wellness UGC videos, product photography, testimonials, and reviews for brands on TikTok, Reels, and Shorts.">
     <link rel="canonical" href="https://dany.ugc.community/">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "ProfilePage",
+          "@id": "https://dany.ugc.community/#profile",
+          "url": "https://dany.ugc.community/",
+          "name": "Daniela Bontecou — UGC Creator",
+          "mainEntity": { "@id": "https://dany.ugc.community/#daniela" }
+        },
+        {
+          "@type": "Person",
+          "@id": "https://dany.ugc.community/#daniela",
+          "name": "Daniela Bontecou",
+          "url": "https://dany.ugc.community/",
+          "image": "https://dany.ugc.community/about-photo.jpeg",
+          "jobTitle": "UGC Creator and Content Strategist",
+          "email": "mailto:danielagzba@gmail.com",
+          "sameAs": [
+            "https://www.instagram.com/danielagzba",
+            "https://www.tiktok.com/@danybontecou"
+          ],
+          "knowsAbout": ["UGC videos", "product photography", "testimonial content", "lifestyle content", "beauty content", "wellness content"]
+        },
+        {
+          "@type": "Service",
+          "@id": "https://dany.ugc.community/#ugc-services",
+          "name": "UGC Content Creation",
+          "url": "https://dany.ugc.community/#services",
+          "provider": { "@id": "https://dany.ugc.community/#daniela" },
+          "serviceType": ["UGC videos", "product photography", "testimonials and reviews"],
+          "description": "Authentic short-form videos and product imagery for brand social media and e-commerce."
+        }
+      ]
+    }
+    </script>
     <link rel="icon" type="image/png" href="favicon.png">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1371,6 +1409,7 @@
             <li><a href="#about">About</a></li>
             <li><a href="#services">Services</a></li>
             <li><a href="#portfolio">Work</a></li>
+            <li><a href="#faq">FAQ</a></li>
             <li><a href="#contact">Contact</a></li>
         </ul>
     </nav>
@@ -1532,6 +1571,31 @@
         </div>
     </section>
 
+    <section class="services" id="faq">
+        <div class="services-header reveal">
+            <p class="section-label" style="color: var(--terracotta-light); justify-content: center;">Before We Collaborate</p>
+            <h2 class="services-title">Frequently Asked Questions</h2>
+            <p class="services-subtitle">A quick overview of the content I create and how to start a project.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card reveal">
+                <div class="service-number">01</div>
+                <h3 class="service-name">What content do you create?</h3>
+                <p class="service-desc">I create short-form UGC videos, product photography, testimonials, reviews, tutorials, unboxings, and lifestyle content, with a focus on beauty and wellness brands.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-number">02</div>
+                <h3 class="service-name">Which platforms do you create for?</h3>
+                <p class="service-desc">My short-form work is designed for TikTok, Instagram Reels, and YouTube Shorts. Product photography can also be used for social media and e-commerce.</p>
+            </div>
+            <div class="service-card reveal">
+                <div class="service-number">03</div>
+                <h3 class="service-name">How do we start?</h3>
+                <p class="service-desc">Send your brand, product, campaign goal, content format, and desired usage details by email or Instagram. I’ll reply directly so we can confirm whether the project is a fit.</p>
+            </div>
+        </div>
+    </section>
+
     <section class="contact" id="contact">
         <div class="contact-content reveal">
             <p class="section-label">Get In Touch</p>
@@ -1594,14 +1658,40 @@
                 </svg>
             </a>
                     </div>
-        <p class="footer-copy">© 2026 Daniela Bontecou. All rights reserved.</p>
+        <p class="footer-copy">© 2026 Daniela Bontecou. All rights reserved. · <a href="/privacy.html">Privacy</a></p>
     </footer>
 
-    <!-- UGC.community Portfolio View Tracking -->
+    <!-- Privacy-preserving portfolio analytics: no cookies; coarse source category only. -->
     <script>
     (function() {
-      var subdomain = 'daniela';
-      var url = 'https://ugc.community/api/portfolio/track?subdomain=' + subdomain;
+      var subdomain = 'dany';
+      var source = 'other';
+      var referrerHost = '';
+      try {
+        referrerHost = document.referrer ? new URL(document.referrer).hostname.toLowerCase() : '';
+      } catch (_) {}
+
+      var aiSources = {
+        'chatgpt.com': 'chatgpt',
+        'chat.openai.com': 'chatgpt',
+        'perplexity.ai': 'perplexity',
+        'claude.ai': 'claude',
+        'copilot.microsoft.com': 'copilot',
+        'gemini.google.com': 'gemini'
+      };
+      if (!referrerHost) {
+        source = 'direct';
+      } else {
+        Object.keys(aiSources).some(function(host) {
+          if (referrerHost === host || referrerHost.endsWith('.' + host)) {
+            source = aiSources[host];
+            return true;
+          }
+          return false;
+        });
+      }
+
+      var url = 'https://ugc.community/api/portfolio/track?subdomain=' + encodeURIComponent(subdomain) + '&source=' + encodeURIComponent(source);
       if (navigator.sendBeacon) {
         navigator.sendBeacon(url);
       } else {

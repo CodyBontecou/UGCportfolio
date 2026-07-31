@@ -1,0 +1,35 @@
+name: Notify IndexNow after production deploy
+
+on:
+  deployment_status:
+
+permissions:
+  contents: read
+
+jobs:
+  notify:
+    if: >-
+      github.event.deployment_status.state == 'success' &&
+      github.event.deployment.environment == 'Production – daniela-ugc-portfolio'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for canonical production alias
+        run: |
+          set -eu
+          key='e322c99f5a83bd7f3a202234a18c4080'
+          for attempt in $(seq 1 18); do
+            body=$(curl --fail --silent --show-error --max-time 15 "https://dany.ugc.community/${key}.txt" || true)
+            if [ "$body" = "$key" ]; then
+              exit 0
+            fi
+            sleep 5
+          done
+          echo 'Production key did not become available in time' >&2
+          exit 1
+
+      - name: Submit changed public URLs
+        run: |
+          curl --fail-with-body --silent --show-error --max-time 30 \
+            -H 'Content-Type: application/json; charset=utf-8' \
+            --data '{"host":"dany.ugc.community","key":"e322c99f5a83bd7f3a202234a18c4080","keyLocation":"https://dany.ugc.community/e322c99f5a83bd7f3a202234a18c4080.txt","urlList":["https://dany.ugc.community/","https://dany.ugc.community/privacy.html"]}' \
+            https://api.indexnow.org/indexnow

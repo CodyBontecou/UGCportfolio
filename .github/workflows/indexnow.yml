@@ -13,11 +13,38 @@ jobs:
       github.event.deployment.environment == 'Production – daniela-ugc-portfolio'
     runs-on: ubuntu-latest
     steps:
+      - name: Check out deployed revision
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.deployment.ref }}
+          fetch-depth: 2
+
+      - name: Select changed canonical URLs
+        id: changed
+        env:
+          DEPLOYED_SHA: ${{ github.event.deployment.ref }}
+        run: |
+          set -eu
+          files=$(git diff-tree --no-commit-id --name-only -r "$DEPLOYED_SHA")
+          urls='[]'
+
+          if printf '%s\n' "$files" | grep -qx 'privacy.html'; then
+            urls=$(printf '%s' "$urls" | jq -c '. + ["https://dany.ugc.community/privacy.html"]')
+          fi
+
+          public_home_files=$(printf '%s\n' "$files" | grep -Ev '^(\.github/|privacy\.html$|robots\.txt$|sitemap\.xml$|e322c99f5a83bd7f3a202234a18c4080\.txt$|vercel\.json$|\.gitignore$|CLAUDE\.md$|README\.md$)' || true)
+          if [ -n "$public_home_files" ]; then
+            urls=$(printf '%s' "$urls" | jq -c '. + ["https://dany.ugc.community/"]')
+          fi
+
+          echo "urls=$urls" >> "$GITHUB_OUTPUT"
+
       - name: Wait for canonical production alias
+        if: steps.changed.outputs.urls != '[]'
         run: |
           set -eu
           key='e322c99f5a83bd7f3a202234a18c4080'
-          for attempt in $(seq 1 18); do
+          for _ in $(seq 1 18); do
             body=$(curl --fail --silent --show-error --max-time 15 "https://dany.ugc.community/${key}.txt" || true)
             if [ "$body" = "$key" ]; then
               exit 0
@@ -28,8 +55,17 @@ jobs:
           exit 1
 
       - name: Submit changed public URLs
+        if: steps.changed.outputs.urls != '[]'
+        env:
+          URLS: ${{ steps.changed.outputs.urls }}
         run: |
+          payload=$(jq -cn --argjson urls "$URLS" '{
+            host: "dany.ugc.community",
+            key: "e322c99f5a83bd7f3a202234a18c4080",
+            keyLocation: "https://dany.ugc.community/e322c99f5a83bd7f3a202234a18c4080.txt",
+            urlList: $urls
+          }')
           curl --fail-with-body --silent --show-error --max-time 30 \
             -H 'Content-Type: application/json; charset=utf-8' \
-            --data '{"host":"dany.ugc.community","key":"e322c99f5a83bd7f3a202234a18c4080","keyLocation":"https://dany.ugc.community/e322c99f5a83bd7f3a202234a18c4080.txt","urlList":["https://dany.ugc.community/","https://dany.ugc.community/privacy.html"]}' \
+            --data "$payload" \
             https://api.indexnow.org/indexnow
